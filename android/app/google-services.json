@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "255455016548",
+    "project_id": "sushi-restaurant-app-33b2a",
+    "storage_bucket": "sushi-restaurant-app-33b2a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:255455016548:android:02b1358c88ec90f54e5171",
+        "android_client_info": {
+          "package_name": "com.example.sushi_restaurant_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCYg6SuZCTmm3xZLRhS_WEWbKPmNZpdfQs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
