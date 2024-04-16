@@ -4,6 +4,7 @@ import 'package:sushi_restaurant_app/domain/entities/menu_item.dart';
 import 'package:sushi_restaurant_app/presentation/controllers/cart/cart_controller.dart';
 import 'package:sushi_restaurant_app/routes.dart';
 
+
 class CartScreen extends StatelessWidget {
   final CartController controller = Get.put(CartController());
 
