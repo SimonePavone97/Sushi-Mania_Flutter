@@ -30,9 +30,7 @@ class CartScreen extends StatelessWidget {
               child: Obx(() {
                 if (controller.cartItems.isEmpty) {
                   return const Center(
-                    child: Text('Nessun articolo nel carrello',
-                    style: TextStyle(color: Colors.black),
-                    ),
+                    child: Text('Nessun articolo nel carrello'),
                   );
                 } else {
                   return ListView.builder(
@@ -98,11 +96,21 @@ class CartScreen extends StatelessWidget {
                                         color: Colors.black54,
                                       ),
                                     ),
+                                    const SizedBox(height: 8.0),
+                                    Text(
+                                      'Quantità: ${cartItem.quantity}',
+                                      style: const TextStyle(
+                                        fontSize: 16.0,
+                                        color: Colors.black54,
+                                      ),
+                                    ),
                                     const SizedBox(height: 16.0),
                                     ElevatedButton(
                                       onPressed: () {
-                                    controller.removeFromCart(cartItem);
-                                    }, child: Text("Rimuovi dal carrello"), )
+                                        controller.removeFromCart(cartItem);
+                                      },
+                                      child: const Text("Rimuovi dal carrello"),
+                                    ),
                                   ],
                                 ),
                               ),

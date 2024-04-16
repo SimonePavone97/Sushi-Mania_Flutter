@@ -5,6 +5,7 @@ class MenuItem {
   final String imageURL;
   final String category;
   final String description;
+  int quantity; // Nuovo campo per la quantità
 
   MenuItem({
     required this.id,
@@ -12,7 +13,8 @@ class MenuItem {
     required this.price,
     required this.imageURL,
     required this.category,
-    required this.description
+    required this.description,
+    this.quantity = 0, // Impostazione predefinita della quantità a 0
   });
 
   factory MenuItem.fromMap(Map<String, dynamic> map) {
@@ -23,6 +25,7 @@ class MenuItem {
       imageURL: map['imageURL'] ?? '',
       category: map['category'] ?? '',
       description: map['description'] ?? '',
+      quantity: map['quantity'] ?? 0, // Impostazione predefinita della quantità a 0
     );
   }
 }
