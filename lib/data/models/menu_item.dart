@@ -5,7 +5,7 @@ class MenuItem {
   final String imageURL;
   final String category;
   final String description;
-  int quantity; // Nuovo campo per la quantità
+  int quantity;
 
   MenuItem({
     required this.id,
@@ -14,8 +14,10 @@ class MenuItem {
     required this.imageURL,
     required this.category,
     required this.description,
-    this.quantity = 0, // Impostazione predefinita della quantità a 0
+    this.quantity = 1,
   });
+
+  double get totalPrice => price * quantity; // Calcolo del prezzo totale
 
   factory MenuItem.fromMap(Map<String, dynamic> map) {
     return MenuItem(
@@ -25,7 +27,7 @@ class MenuItem {
       imageURL: map['imageURL'] ?? '',
       category: map['category'] ?? '',
       description: map['description'] ?? '',
-      quantity: map['quantity'] ?? 0, // Impostazione predefinita della quantità a 0
+      quantity: map['quantity'] ?? 1,
     );
   }
 }

@@ -4,7 +4,6 @@ import 'package:sushi_restaurant_app/domain/entities/menu_item.dart';
 import 'package:sushi_restaurant_app/presentation/controllers/cart/cart_controller.dart';
 import 'package:sushi_restaurant_app/routes.dart';
 
-
 class CartScreen extends StatelessWidget {
   final CartController controller = Get.put(CartController());
 
@@ -25,131 +24,123 @@ class CartScreen extends StatelessWidget {
             ],
           ),
         ),
-        child: Column(
-          children: [
-            Expanded(
-              child: Obx(() {
-                if (controller.cartItems.isEmpty) {
-                  return const Center(
-                    child: Text('Nessun articolo nel carrello'),
-                  );
-                } else {
-                  return ListView.builder(
-                    itemCount: controller.cartItems.length,
-                    itemBuilder: (context, index) {
-                      MenuItem cartItem = controller.cartItems[index];
-                      return Container(
-                        margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(16.0),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.3),
-                              spreadRadius: 2,
-                              blurRadius: 5,
-                              offset: const Offset(0, 3),
+        child: Obx(() {
+          if (controller.cartItems.isEmpty) {
+            return const Center(
+              child: Text(
+                'Nessun articolo nel carrello',
+                style: TextStyle(color: Colors.black),
+              ),
+            );
+          } else {
+            return ListView.builder(
+              itemCount: controller.cartItems.length,
+              itemBuilder: (context, index) {
+                MenuItem cartItem = controller.cartItems[index];
+                return Container(
+                  margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16.0),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.3),
+                        spreadRadius: 2,
+                        blurRadius: 5,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: 120,
+                          height: 120,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(16.0),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: 1,
+                                blurRadius: 3,
+                                offset: const Offset(0, 2),
+                              ),
+                            ],
+                            image: DecorationImage(
+                              image: NetworkImage(cartItem.imageURL),
+                              fit: BoxFit.cover,
                             ),
-                          ],
+                          ),
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Row(
+                        const SizedBox(width: 16.0),
+                        Expanded(
+                          child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Container(
-                                width: 120,
-                                height: 120,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(16.0),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.5),
-                                      spreadRadius: 1,
-                                      blurRadius: 3,
-                                      offset: const Offset(0, 2),
-                                    ),
-                                  ],
-                                  image: DecorationImage(
-                                    image: NetworkImage(cartItem.imageURL),
-                                    fit: BoxFit.cover,
-                                  ),
+                              Text(
+                                cartItem.name,
+                                style: const TextStyle(
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black87,
                                 ),
                               ),
-                              const SizedBox(width: 16.0),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      cartItem.name,
-                                      style: const TextStyle(
-                                        fontSize: 20.0,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black87,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 8.0),
-                                    Text(
-                                      'Prezzo: ${cartItem.price}€',
-                                      style: const TextStyle(
-                                        fontSize: 16.0,
-                                        color: Colors.black54,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 8.0),
-                                    Text(
-                                      'Quantità: ${cartItem.quantity}',
-                                      style: const TextStyle(
-                                        fontSize: 16.0,
-                                        color: Colors.black54,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 16.0),
-                                    ElevatedButton(
-                                      onPressed: () {
-                                        controller.removeFromCart(cartItem);
-                                      },
-                                      child: const Text("Rimuovi dal carrello"),
-                                    ),
-                                  ],
+                              const SizedBox(height: 8.0),
+                              Text(
+                                'Prezzo: ${cartItem.price}€',
+                                style: const TextStyle(
+                                  fontSize: 16.0,
+                                  color: Colors.black54,
                                 ),
+                              ),
+                              const SizedBox(height: 8.0),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Obx(() {
+                                    return Text(
+                                      'Quantità: ${cartItem.quantity.value}',
+                                      style: const TextStyle(
+                                        fontSize: 16.0,
+                                        color: Colors.black54,
+                                      ),
+                                    );
+                                  }),
+                                  const SizedBox(height: 8.0),
+                                  Row(
+                                    children: [
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          controller.removeFromCart(cartItem);
+                                        },
+                                        child: const Text("Rimuovi tutto"),
+                                      ),
+                                      const SizedBox(width: 8.0),
+                                      IconButton(
+                                        icon: const Icon(Icons.remove,
+                                          color: Colors.black,),
+                                        onPressed: () {
+                                          controller.removeFromCart(cartItem, quantityToRemove: 1);
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ),
                             ],
                           ),
                         ),
-                      );
-                    },
-                  );
-                }
-              }),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Totale:',
-                    style: TextStyle(
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
+                      ],
                     ),
                   ),
-                  Obx(() => Text(
-                    '${controller.getTotalPrice()}€',
-                    style: const TextStyle(
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
-                    ),
-                  )),
-                ],
-              ),
-            ),
-          ],
-        ),
+                );
+              },
+            );
+          }
+        }),
       ),
       bottomNavigationBar: BottomAppBar(
         child: Row(

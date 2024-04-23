@@ -5,38 +5,36 @@ class CartController extends GetxController {
   final RxList<MenuItem> cartItems = <MenuItem>[].obs;
 
   void addItemToCart(MenuItem item) {
-    // Cerca l'articolo nel carrello
     final existingItem = cartItems.firstWhereOrNull((cartItem) => cartItem == item);
 
-
-    // Se l'articolo è già nel carrello, incrementa la quantità
     if (existingItem != null) {
-      existingItem.quantity++;
+      existingItem.quantity.value++; // Modifica della quantità usando .value
     } else {
-      // Altrimenti, aggiungi l'articolo al carrello con quantità 1
-      item.quantity = 1;
+      item.quantity = 1.obs; // Modifica della quantità come RxInt
       cartItems.add(item);
     }
   }
 
-
-  void removeFromCart(MenuItem item) {
-    cartItems.remove(item);
+  void removeFromCart(MenuItem item, {int quantityToRemove = 0}) {
+    if (quantityToRemove > 0 && item.quantity.value > 1) {
+      item.quantity.value -= quantityToRemove; // Modifica della quantità usando .value
+    } else {
+      cartItems.remove(item);
+    }
   }
 
   double getTotalPrice() {
     try {
       double total = 0.0;
       for (var item in cartItems) {
-        total += item.price * item.quantity; // Moltiplica il prezzo per la quantità
+        total += item.price * item.quantity.value; // Modifica della quantità usando .value
       }
-      return double.parse(total.toStringAsFixed(2)); // Restituisce il totale con due cifre decimali
+      return double.parse(total.toStringAsFixed(2));
     } catch (e) {
       print("Errore nel calcolo del totale: $e");
-      return 0.0; // In caso di errore, restituisce 0.0
+      return 0.0;
     }
   }
-
 
   void clearCart() {
     cartItems.clear();
