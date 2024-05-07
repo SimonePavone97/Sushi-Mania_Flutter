@@ -2,10 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sushi_restaurant_app/domain/entities/menu_item.dart';
 import 'package:sushi_restaurant_app/presentation/controllers/cart/cart_controller.dart';
+import 'package:sushi_restaurant_app/presentation/controllers/order/order_controller.dart';
 import 'package:sushi_restaurant_app/routes.dart';
 
+import '../../../data/models/order_model.dart';
+import '../order/order_screen.dart';
+
 class CartScreen extends StatelessWidget {
-  final CartController controller = Get.put(CartController());
+  final CartController cartController = Get.find();
+  final OrderController orderController = Get.put(OrderController(Get.find()));
+
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +31,7 @@ class CartScreen extends StatelessWidget {
           ),
         ),
         child: Obx(() {
-          if (controller.cartItems.isEmpty) {
+          if (cartController.cartItems.isEmpty) {
             return const Center(
               child: Text(
                 'Nessun articolo nel carrello',
@@ -34,9 +40,9 @@ class CartScreen extends StatelessWidget {
             );
           } else {
             return ListView.builder(
-              itemCount: controller.cartItems.length,
+              itemCount: cartController.cartItems.length,
               itemBuilder: (context, index) {
-                MenuItem cartItem = controller.cartItems[index];
+                MenuItem cartItem = cartController.cartItems[index];
                 return Container(
                   margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                   decoration: BoxDecoration(
@@ -114,16 +120,16 @@ class CartScreen extends StatelessWidget {
                                     children: [
                                       ElevatedButton(
                                         onPressed: () {
-                                          controller.removeFromCart(cartItem);
+                                          cartController.removeFromCartOne(cartItem);
                                         },
-                                        child: const Text("Rimuovi tutto"),
+                                        child: const Text("Elimina"),
                                       ),
                                       const SizedBox(width: 8.0),
                                       IconButton(
                                         icon: const Icon(Icons.remove,
                                           color: Colors.black,),
                                         onPressed: () {
-                                          controller.removeFromCart(cartItem, quantityToRemove: 1);
+                                          cartController.removeFromCart(cartItem, quantityToRemove: 1);
                                         },
                                       ),
                                     ],
@@ -144,7 +150,7 @@ class CartScreen extends StatelessWidget {
       ),
       bottomNavigationBar: BottomAppBar(
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             IconButton(
               icon: const Icon(Icons.menu),
@@ -154,11 +160,37 @@ class CartScreen extends StatelessWidget {
               },
             ),
             IconButton(
-              icon: const Icon(Icons.shopping_cart),
+              icon: const Icon(Icons.card_travel_outlined),
               onPressed: () {
-                // Naviga alla schermata del carrello
-                Get.toNamed(AppRoutes.cart);
+                // Naviga alla schermata dell'ordine
+                Get.toNamed(AppRoutes.order);
               },
+            ),
+            ElevatedButton(
+              onPressed: () {
+                if (cartController.isCartEmpty()) {
+                  // Mostra un messaggio di avviso se il carrello è vuoto
+                  Get.snackbar(
+                    'Attenzione',
+                    'Impossibile inviare un ordine vuoto',
+                    snackPosition: SnackPosition.BOTTOM,
+                  );
+                } else {
+                  // Converte gli elementi del carrello in un singolo oggetto OrderModel
+                  OrderModel orderModel = cartController.convertToOrderModel();
+                  // Invia l'ordine al controller dell'ordine solo se il carrello non è vuoto
+                  orderController.placeOrder(orderModel);
+                  // Svuota il carrello
+                  cartController.clearCart();
+                  // Mostra un messaggio di conferma
+                  Get.snackbar(
+                    'Ordine inviato',
+                    'Grazie per il tuo ordine!',
+                    snackPosition: SnackPosition.BOTTOM,
+                  );
+                }
+              },
+              child: const Text("Conferma ordine"),
             ),
           ],
         ),

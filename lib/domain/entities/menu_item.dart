@@ -21,6 +21,18 @@ class MenuItem {
     this.quantity = quantity.obs; // Inizializza RxInt
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'price': price,
+      'imageURL': imageURL,
+      'category': category,
+      'description': description,
+      'quantity': quantity,
+    };
+  }
+
   factory MenuItem.fromMap(Map<String, dynamic> map) {
     return MenuItem(
       id: map['id'] ?? '',

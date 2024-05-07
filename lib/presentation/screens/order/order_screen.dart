@@ -1,33 +1,84 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sushi_restaurant_app/data/models/order_model.dart';
 import 'package:sushi_restaurant_app/presentation/controllers/order/order_controller.dart';
 
+import '../../controllers/cart/cart_controller.dart';
 
 class OrderScreen extends StatelessWidget {
-  final OrderController orderController = Get.find<OrderController>();
+  final CartController _cartController = Get.find();
 
   @override
   Widget build(BuildContext context) {
+    Get.put(OrderController(_cartController));
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Order'),
+        title: const Text('Ordini Confermati'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Obx(
-                  () => ListView.builder(
-                itemCount: orderController.orderItems.length,
+      body: Container(
+        padding: const EdgeInsets.all(16),
+        child: GetX<OrderController>(
+          builder: (_) {
+            if (_.orders.isEmpty) {
+              return const Center(
+                child: Text(
+                  'Nessun ordine confermato.',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              );
+            } else {
+              return ListView.builder(
+                itemCount: _.orders.length,
                 itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(orderController.orderItems[index]),
+                  OrderModel order = _.orders[index];
+                  return Card(
+                    elevation: 3,
+                    margin: const EdgeInsets.symmetric(vertical: 8),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Ordine #${order.orderId}',
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            'Data: ${order.createdAt}',
+                            style: const TextStyle(
+                              fontSize: 16,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            'Totale: ${order.total}€',
+                            style: const TextStyle(
+                              fontSize: 16,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            'Stato: ${order.status}',
+                            style: const TextStyle(
+                              fontSize: 16,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   );
                 },
-              ),
-            ),
-            Text('Total: \$${orderController.total}'),
-          ],
+              );
+            }
+          },
         ),
       ),
     );
