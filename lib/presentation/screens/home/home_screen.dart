@@ -120,11 +120,26 @@ class HomeScreen extends StatelessWidget {
           }
         }),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Get.toNamed(AppRoutes.order);
-        },
-        child: const Icon(Icons.restaurant_menu),
+      bottomNavigationBar: BottomAppBar(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            IconButton(
+              icon: const Icon(Icons.menu),
+              onPressed: () {
+                // Naviga alla schermata del menu
+                Get.toNamed(AppRoutes.home);
+              },
+            ),
+            IconButton(
+              icon: const Icon(Icons.card_travel_outlined),
+              onPressed: () {
+                // Naviga alla schermata dell'ordine
+                Get.toNamed(AppRoutes.order);
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

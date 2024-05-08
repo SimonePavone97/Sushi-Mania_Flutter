@@ -1,8 +1,5 @@
 import 'package:get/get.dart';
 import 'package:sushi_restaurant_app/domain/entities/menu_item.dart';
-
-
-
 import '../../../data/models/order_model.dart';
 
 class CartController extends GetxController {
@@ -26,8 +23,6 @@ class CartController extends GetxController {
       status: 'Confirmed',
     );
   }
-
-
 
   bool isCartEmpty() {
     return cartItems.isEmpty;
@@ -57,7 +52,7 @@ class CartController extends GetxController {
   }
 
   void removeFromCartOne(MenuItem item) {
-      cartItems.remove(item); // Rimuove l'articolo direttamente anziché decrementare la quantità
+      cartItems.remove(item); // Rimuove l'articolo direttamente anziché decrementarne la quantità
   }
 
   double getTotalPrice() {

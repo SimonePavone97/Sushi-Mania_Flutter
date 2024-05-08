@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:sushi_restaurant_app/data/models/order_model.dart';
 import 'package:sushi_restaurant_app/presentation/controllers/order_controllers/order_controller.dart';
 
+import '../../../routes.dart';
 import '../../controllers/cart_controllers/cart_controller.dart';
 
 class OrderScreen extends StatelessWidget {
@@ -79,6 +80,20 @@ class OrderScreen extends StatelessWidget {
               );
             }
           },
+        ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            IconButton(
+              icon: const Icon(Icons.menu),
+              onPressed: () {
+                // Naviga alla schermata del menu
+                Get.toNamed(AppRoutes.home);
+              },
+            ),
+          ],
         ),
       ),
     );
