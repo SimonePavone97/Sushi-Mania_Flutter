@@ -2,58 +2,48 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sushi_restaurant_app/data/models/order_model.dart';
+import 'package:logger/logger.dart';
 
 class OrderService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final Logger _logger = Logger();
 
   Future<void> placeOrder(OrderModel order) async {
     try {
       await _firestore.collection('orders').add(order.toMap());
     } catch (e) {
-      // Gestisci eventuali errori qui
-      print('Errore durante il salvataggio dell\'ordine: $e');
-      rethrow; // Puoi gestire l'errore in modo personalizzato o lanciarlo di nuovo
+      _logger.e('Errore durante il salvataggio dell\'ordine: $e');
+      rethrow;
     }
   }
 
   Future<List<OrderModel>> fetchOrders() async {
     try {
-      // Recupera gli ordini dalla collezione 'orders' in Firestore
       QuerySnapshot<Map<String, dynamic>> snapshot =
       await _firestore.collection('orders').get();
-
-      // Mappa i documenti restituiti in una lista di OrderModel
       List<OrderModel> orders = snapshot.docs
           .map((doc) => OrderModel.fromMap(doc.data()))
           .toList();
-
       return orders;
     } catch (e) {
-      // Gestisci eventuali errori qui
-      print('Errore durante il recupero degli ordini: $e');
-      rethrow; // Puoi gestire l'errore in modo personalizzato o lanciarlo di nuovo
+      _logger.e('Errore durante il recupero degli ordini: $e');
+      rethrow;
     }
   }
 
-  // Metodo per recuperare gli ordini confermati
   Future<List<OrderModel>> fetchConfirmedOrders() async {
     try {
-      // Recupera gli ordini confermati dalla collezione 'orders' in Firestore
       QuerySnapshot<Map<String, dynamic>> snapshot = await _firestore
           .collection('orders')
-          .where('status', isEqualTo: 'confirmed')
+          .where('status', isEqualTo: 'Confirmed')
           .get();
-
-      // Mappa i documenti restituiti in una lista di OrderModel
       List<OrderModel> confirmedOrders = snapshot.docs
           .map((doc) => OrderModel.fromMap(doc.data()))
           .toList();
-
       return confirmedOrders;
     } catch (e) {
-      // Gestisci eventuali errori qui
-      print('Errore durante il recupero degli ordini confermati: $e');
-      rethrow; // Puoi gestire l'errore in modo personalizzato o lanciarlo di nuovo
+      _logger.e('Errore durante il recupero degli ordini confermati: $e');
+      rethrow;
     }
   }
 }

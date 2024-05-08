@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sushi_restaurant_app/domain/entities/menu_item.dart';
-import 'package:sushi_restaurant_app/presentation/controllers/cart/cart_controller.dart';
-import 'package:sushi_restaurant_app/presentation/controllers/order/order_controller.dart';
+import 'package:sushi_restaurant_app/presentation/controllers/cart_controllers/cart_controller.dart';
+import 'package:sushi_restaurant_app/presentation/controllers/order_controllers/order_controller.dart';
 import 'package:sushi_restaurant_app/routes.dart';
 
 import '../../../data/models/order_model.dart';
-import '../order/order_screen.dart';
 
 class CartScreen extends StatelessWidget {
   final CartController cartController = Get.find();
   final OrderController orderController = Get.put(OrderController(Get.find()));
-
 
   @override
   Widget build(BuildContext context) {
@@ -173,7 +171,7 @@ class CartScreen extends StatelessWidget {
                   Get.snackbar(
                     'Attenzione',
                     'Impossibile inviare un ordine vuoto',
-                    snackPosition: SnackPosition.BOTTOM,
+                    snackPosition: SnackPosition.TOP,
                   );
                 } else {
                   // Converte gli elementi del carrello in un singolo oggetto OrderModel

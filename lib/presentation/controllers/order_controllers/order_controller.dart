@@ -1,13 +1,13 @@
-// order_controller.dart
-
 import 'package:get/get.dart';
 import 'package:sushi_restaurant_app/domain/services/order_service.dart';
 import '../../../data/models/order_model.dart';
-import '../cart/cart_controller.dart';
+import '../cart_controllers/cart_controller.dart';
+import 'package:logger/logger.dart';
 
 class OrderController extends GetxController {
   final OrderService _orderService = OrderService();
   final CartController _cartController;
+  final Logger _logger = Logger();
 
   // Lista degli ordini confermati
   RxList<OrderModel> orders = <OrderModel>[].obs;
@@ -28,8 +28,8 @@ class OrderController extends GetxController {
       final List<OrderModel> confirmedOrders = await _orderService.fetchConfirmedOrders();
       // Aggiorna la lista degli ordini nel controller
       orders.assignAll(confirmedOrders);
-    } catch (error) {
-      print('Errore durante il recupero degli ordini confermati: $error');
+    } catch (error, stackTrace) {
+      _logger.e('Errore durante il recupero degli ordini confermati', error: error, stackTrace: stackTrace);
       // Gestisci l'errore, ad esempio mostrando un messaggio all'utente
     }
   }
@@ -46,13 +46,13 @@ class OrderController extends GetxController {
         // Aggiorna la lista degli ordini
         fetchConfirmedOrders();
         // Esegui altre azioni se necessario, ad esempio aggiornare lo stato dell'app
-      } catch (error) {
+      } catch (error, stackTrace) {
         // Gestisci l'errore se la chiamata al backend fallisce
-        print('Errore durante il piazzamento dell\'ordine: $error');
+        _logger.e('Errore durante il piazzamento dell\'ordine', error: error, stackTrace: stackTrace);
         // Esegui altre azioni per gestire l'errore, ad esempio mostrare un messaggio all'utente
       }
     } else {
-      print("L'ordine non contiene articoli o il totale è zero.");
+      _logger.w("L'ordine non contiene articoli o il totale è zero.");
       // Esegui altre azioni se l'ordine non può essere inviato, ad esempio mostrare un messaggio all'utente
     }
   }

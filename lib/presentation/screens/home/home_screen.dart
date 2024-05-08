@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sushi_restaurant_app/domain/entities/menu_item.dart';
-import 'package:sushi_restaurant_app/presentation/controllers/home/home_controller.dart';
+import 'package:sushi_restaurant_app/presentation/controllers/home_controllers/home_controller.dart';
 import 'package:sushi_restaurant_app/routes.dart';
 
 class HomeScreen extends StatelessWidget {

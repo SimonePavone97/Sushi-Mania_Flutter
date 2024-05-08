@@ -2,9 +2,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sushi_restaurant_app/routes.dart';
-import 'package:sushi_restaurant_app/presentation/bindings/order_binding.dart';
 
-import 'package:sushi_restaurant_app/theme.dart';
+//import 'package:sushi_restaurant_app/theme.dart';
 
 import 'data/repositories/menu_repository_impl.dart'; // Importa l'implementazione concreta di MenuRepository
 import 'domain/repositories/menu_repository.dart'; // Importa l'interfaccia MenuRepository

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:sushi_restaurant_app/data/models/order_model.dart';
-import 'package:sushi_restaurant_app/presentation/controllers/order/order_controller.dart';
+import 'package:sushi_restaurant_app/presentation/controllers/order_controllers/order_controller.dart';
 
-import '../../controllers/cart/cart_controller.dart';
+import '../../controllers/cart_controllers/cart_controller.dart';
 
 class OrderScreen extends StatelessWidget {
   final CartController _cartController = Get.find();
@@ -51,9 +52,8 @@ class OrderScreen extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 8),
-                          Text(
-                            'Data: ${order.createdAt}',
-                            style: const TextStyle(
+                          Text('Data: ${DateFormat("HH:mm").format(order.createdAt)}',
+                              style: const TextStyle(
                               fontSize: 16,
                             ),
                           ),

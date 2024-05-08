@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:sushi_restaurant_app/domain/entities/menu_item.dart';
+import 'package:intl/intl.dart';
 
 import '../../../data/models/order_model.dart';
 
@@ -21,9 +22,11 @@ class CartController extends GetxController {
       createdAt: DateTime.now(),
       orderId: '',
       tableId: '',
-      status: 'confirmed',
+      status: 'Confirmed',
     );
   }
+
+
 
   bool isCartEmpty() {
     return cartItems.isEmpty;
@@ -53,28 +56,15 @@ class CartController extends GetxController {
   }
 
   void removeFromCartOne(MenuItem item) {
-    final existingItemIndex = cartItems.indexWhere((cartItem) => cartItem == item);
-    if (existingItemIndex != -1) {
-      final existingItem = cartItems[existingItemIndex];
-      if (existingItem.quantity.value > 1) {
-        existingItem.quantity.value--; // Decrementa la quantità dell'elemento se è maggiore di uno
-      } else {
-        cartItems.removeAt(existingItemIndex); // Rimuovi completamente l'elemento se la quantità è uno
-      }
-    }
+      cartItems.remove(item); // Rimuove l'articolo direttamente anziché decrementare la quantità
   }
 
   double getTotalPrice() {
-    try {
-      double total = 0.0;
-      for (var item in cartItems) {
-        total += item.price * item.quantity.value; // Calcola il totale moltiplicando il prezzo per la quantità di ciascun elemento
-      }
-      return double.parse(total.toStringAsFixed(2));
-    } catch (e) {
-      print("Errore nel calcolo del totale: $e");
-      return 0.0;
+    double total = 0.0;
+    for (var item in cartItems) {
+      total += item.price * item.quantity.value; // Calcola il totale moltiplicando il prezzo per la quantità di ciascun elemento
     }
+    return double.parse(total.toStringAsFixed(2));
   }
 
   void clearCart() {

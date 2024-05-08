@@ -8,7 +8,6 @@ class DataMenuRepository {
       QuerySnapshot querySnapshot = await _firestore.collection('menu').get();
       return querySnapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
     } catch (e) {
-      print("Error getting menu items: $e");
       return [];
     }
   }
